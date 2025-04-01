@@ -1,9 +1,6 @@
 from datetime import datetime
 
-def depositar(saldo, extrato, total_transacoes, LIMITE_TRANSACOES):
-    if total_transacoes >= LIMITE_TRANSACOES:
-        print("\n❌ Operação falhou! Limite diário de transações atingido.\n")
-        return saldo, extrato, total_transacoes
+def depositar(saldo, extrato):
     try:
         valor = float(input("Informe o valor do depósito: ").replace(",", "."))  # Aceita "," como separador decimal
         if valor > 0:
