@@ -1,19 +1,26 @@
 from datetime import datetime
 
-def depositar(saldo, extrato):
+def depositar(saldo, extrato, total_transacoes, LIMITE_TRANSACOES):
+    if total_transacoes >= LIMITE_TRANSACOES:
+        print("\n❌ Operação falhou! Limite diário de transações atingido.\n")
+        return saldo, extrato, total_transacoes
     try:
         valor = float(input("Informe o valor do depósito: ").replace(",", "."))  # Aceita "," como separador decimal
         if valor > 0:
             saldo += valor
             extrato.append(f"{datetime.now().strftime('%d/%m/%Y %H:%M')} - Depósito: R$ {valor:.2f}")
+            total_transacoes += 1
             print("\n✅ Depósito realizado com sucesso!\n")
         else:
             print("\n❌ Operação falhou! O valor informado é inválido.\n")
     except ValueError:
         print("\n❌ Entrada inválida! Digite um número válido.\n")
-    return saldo, extrato
+    return saldo, extrato, total_transacoes
 
-def sacar(saldo, extrato, numero_saques, LIMITE_SAQUES, limite):
+def sacar(saldo, extrato, total_transacoes, numero_saques, LIMITE_SAQUES, LIMITE_TRANSACOES, limite):
+    if total_transacoes >= LIMITE_TRANSACOES:
+        print("\n❌ Operação falhou! Limite diário de transações atingido.\n")
+        return saldo, extrato, numero_saques, total_transacoes
     try:
         valor = float(input("Informe o valor do saque: ").replace(",", "."))
         
@@ -29,12 +36,13 @@ def sacar(saldo, extrato, numero_saques, LIMITE_SAQUES, limite):
             saldo -= valor
             extrato.append(f"{datetime.now().strftime('%d/%m/%Y %H:%M')} - Saque: R$ {valor:.2f}")
             numero_saques += 1
+            total_transacoes += 1
             print("\n✅ Saque realizado com sucesso!\n")
     
     except ValueError:
         print("\n❌ Entrada inválida! Digite um número válido.\n")
     
-    return saldo, extrato, numero_saques
+    return saldo, extrato, numero_saques, total_transacoes
 
 def exibir_extrato(saldo, extrato):
     print("\n================ EXTRATO ================\n")
@@ -52,6 +60,8 @@ def main():
     extrato = []
     numero_saques = 0
     LIMITE_SAQUES = 3
+    total_transacoes = 0
+    LIMITE_TRANSACOES = 10
 
     menu = """
     🔹 Escolha uma opção:
@@ -69,9 +79,9 @@ def main():
         opcao = input(menu).strip().lower()
 
         if opcao == "d":
-            saldo, extrato = depositar(saldo, extrato)
+            saldo, extrato, total_transacoes = depositar(saldo, extrato, total_transacoes, LIMITE_TRANSACOES)
         elif opcao == "s":
-            saldo, extrato, numero_saques = sacar(saldo, extrato, numero_saques, LIMITE_SAQUES, limite)
+            saldo, extrato, numero_saques, total_transacoes = sacar(saldo, extrato, total_transacoes, numero_saques, LIMITE_SAQUES, LIMITE_TRANSACOES, limite)
         elif opcao == "e":
             exibir_extrato(saldo, extrato)
         elif opcao == "q":
@@ -82,5 +92,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
