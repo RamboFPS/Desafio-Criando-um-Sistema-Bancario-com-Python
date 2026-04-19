@@ -1,7 +1,7 @@
-💰 Sistema Bancário em Python com FastAPI
+## 💰 Sistema Bancário em Python com FastAPI
 Este projeto implementa uma API REST que simula um sistema bancário simples, com funcionalidades como cadastro de clientes e contas, movimentações financeiras (depósitos, saques, transferências), emissão de extratos e autenticação segura. O sistema utiliza SQLite como banco de dados e está totalmente funcional.
 
-📜 Funcionalidades
+## 📜 Funcionalidades
 Cadastro de clientes com senha criptografada (bcrypt)
 
 Criação e gerenciamento de contas bancárias
@@ -18,7 +18,7 @@ Emissão de extrato detalhado
 
 Exclusão de clientes e contas
 
-🔒 Segurança
+## 🔒 Segurança
 Senhas armazenadas com bcrypt (hash seguro, não reversível)
 
 Autenticação com JWT:
@@ -29,8 +29,8 @@ Operações financeiras só são permitidas com token válido
 
 Tokens inválidos ou expirados exigem novo login
 
-▶️ Como Usar
-Clone este repositório
+ ## ▶️ Como Usar
+### Clone este repositório
 
 bash
 git clone https://github.com/RamboFPS/Desafio-Criando-um-Sistema-Bancario-com-Python.git
@@ -47,7 +47,7 @@ Acesse a documentação interativa (Swagger UI)
 Código
 http://127.0.0.1:8000/docs
 
-Estrutura final da sua API
+## Estrutura final da sua API
 Clientes (CRUD completo)
 
 POST /clientes → criar cliente
@@ -76,7 +76,7 @@ GET /extrato/{numero} → consultar extrato e saldo atualizado
 
 🔒 Sem Update/Delete → transações são imutáveis, garantindo histórico confiável
 
-✅ Benefícios dessa decisão
+## ✅ Benefícios dessa decisão
 Auditoria: cada movimentação fica registrada permanentemente.
 
 Segurança: evita manipulação indevida de histórico financeiro.
@@ -85,7 +85,7 @@ Consistência: saldo é sempre calculado a partir das transações registradas.
 
 Aderência ao mundo real: bancos não permitem apagar ou editar movimentações já realizadas.
 
-🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 Python 3
 
 FastAPI (framework web)
