@@ -1,70 +1,97 @@
- # 💰 Sistema Bancário em Python
+💰 Sistema Bancário em Python com FastAPI
+Este projeto implementa uma API REST que simula um sistema bancário simples, com funcionalidades como cadastro de clientes e contas, movimentações financeiras (depósitos, saques, transferências), emissão de extratos e autenticação segura. O sistema utiliza SQLite como banco de dados e está totalmente funcional.
 
-Este é um projeto de terminal que simula um sistema bancário simples, com funcionalidades como cadastro de usuários e contas, movimentações financeiras (depósitos, saques, transferências), geração de extratos, entre outros.
+📜 Funcionalidades
+Cadastro de clientes com senha criptografada (bcrypt)
 
-# 📜 Funcionalidades
+Criação e gerenciamento de contas bancárias
 
-Cadastro de usuários
-Cadastro e gerenciamento de contas bancárias
+Login seguro com geração de token JWT válido por 30 minutos
+
 Depósitos
-Saques (com limite)
+
+Saques (com verificação de saldo)
+
 Transferências entre contas
-Emissão de extrato
-Exclusão de usuários e contas
 
+Emissão de extrato detalhado
 
-# ▶️ Como Usar
-Execute o script em um ambiente Python 3:
-Ao iniciar, o sistema apresenta um menu principal, com as seguintes opções:
+Exclusão de clientes e contas
 
-🔹 Menu Principal:
+🔒 Segurança
+Senhas armazenadas com bcrypt (hash seguro, não reversível)
 
-[1] Depósito
-[2] Saque
-[3] Transferência
-[4] Extrato
-[5] Menu de Cadastro
-[0] Sair
+Autenticação com JWT:
 
-# 🧩 Estrutura do Código
-Função principal que inicializa o sistema, exibe o menu e coordena a execução das ações.
+Cada login gera um token válido por 30 minutos
 
-Menu específico para o gerenciamento de usuários e contas bancárias:
+Operações financeiras só são permitidas com token válido
 
-🔹 Menu de Cadastro:
+Tokens inválidos ou expirados exigem novo login
 
-[1] Cadastrar Usuário  
-[2] Cadastrar Conta Bancária  
-[3] Listar Contas  
-[4] Encerrar Conta Bancária  
-[0] Voltar ao Menu Principal
+▶️ Como Usar
+Clone este repositório
 
-# 📦 Funções
-## Usuários
+bash
+git clone https://github.com/RamboFPS/Desafio-Criando-um-Sistema-Bancario-com-Python.git
+Instale as dependências
 
-Cadastra um novo usuário se o CPF for único
-Exclui o usuário e todas as contas associadas ao CPF.
-Contas Bancárias
-Cria uma conta para um usuário existente, respeitando o limite e tipo da conta.
-Lista todas as contas cadastradas com seus respectivos titulares.
-Encerra uma conta se não houver saldo.
+bash
+pip install fastapi uvicorn bcrypt PyJWT
+Execute o servidor
 
-# Operações Financeiras
-Realiza depósito em uma conta válida.
-Realiza saque com verificação de saldo e limite por operação.
-Realiza transferência entre contas diferentes.
-Exibe o extrato e o saldo atual da conta.
+bash
+uvicorn api:app --reload
+Acesse a documentação interativa (Swagger UI)
 
-# ⚙️ Regras de Negócio
-Cada CPF pode ter no máximo 2 contas bancárias.
+Código
+http://127.0.0.1:8000/docs
 
-Um usuário não pode ter duas contas do mesmo tipo.
-O valor máximo por saque é de R$ 500,00.
-Não é possível encerrar contas com saldo positivo.
-É necessário que os CPFs sejam únicos no sistema.
----
+Estrutura final da sua API
+Clientes (CRUD completo)
 
-## 🎮 **Como Executar o Programa**
-### 🔹 **1. Clone este repositório**
-```bash
-https://github.com/RamboFPS/Desafio-Criando-um-Sistema-Bancario-com-Python.git
+POST /clientes → criar cliente
+
+GET /clientes/{cpf} → consultar cliente
+
+PUT /clientes/{cpf} → atualizar dados do cliente
+
+DELETE /clientes/{cpf} → excluir cliente e contas associadas
+
+Contas (CRUD completo com regras)
+
+POST /contas → criar conta
+
+GET /contas/{numero} → consultar conta
+
+PUT /contas/{numero} → atualizar agência ou encerrar conta
+
+DELETE /contas/{numero} → excluir conta (somente se saldo = 0)
+
+## Transações (somente Create + Read)
+
+POST /transacoes → registrar depósito, saque ou transferência
+
+GET /extrato/{numero} → consultar extrato e saldo atualizado
+
+🔒 Sem Update/Delete → transações são imutáveis, garantindo histórico confiável
+
+✅ Benefícios dessa decisão
+Auditoria: cada movimentação fica registrada permanentemente.
+
+Segurança: evita manipulação indevida de histórico financeiro.
+
+Consistência: saldo é sempre calculado a partir das transações registradas.
+
+Aderência ao mundo real: bancos não permitem apagar ou editar movimentações já realizadas.
+
+🛠️ Tecnologias Utilizadas
+Python 3
+
+FastAPI (framework web)
+
+SQLite3 (banco de dados relacional)
+
+bcrypt (hash de senhas)
+
+PyJWT (JSON Web Token)
